@@ -15,6 +15,7 @@ import zoyaBraceletImg from './assets/zoya-baguette-diamond-bracelet.jpg'
 import tarkashiFrameImg from './assets/tarkashi-silver-filigree-frame.jpg'
 import luxeFrameImg from './assets/luxe-floating-brass-frame.png'
 import lakshmiGaneshCoinImg from './assets/lakshmi-ganesh-gold-coin.jpg'
+import royalAnniversaryBoxImg from './assets/royal-anniversary-keepsake-box.jpg'
 
 export const CATS = {
   jewellery: ['Necklaces & Chokers', 'Rings & Solitaires', 'Earrings & Jhumkas', 'Bangles & Kadas', 'Mangalsutra & Pendants'],
@@ -293,45 +294,13 @@ export const PRODUCTS = [
     rating: 4.9,
     reviews: 62,
     badge: 'Couple Edition',
-    image: 'https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=900&auto=format&fit=crop',
+    image: royalAnniversaryBoxImg,
+    images: [royalAnniversaryBoxImg],
     desc: 'Curated for celebrating golden years: includes dual personalized champagne flutes with gold rim, dual photo frame, and custom wax-sealed letter.',
     giftReady: true,
     customizable: true
   },
-  {
-    id: 15,
-    name: 'Prestige Executive Gilded Corporate Gift Set',
-    cat: 'gifting',
-    sub: 'Corporate Luxury Boxes',
-    price: 16800,
-    old: 19500,
-    metal: 'Leather & Brass Finishes',
-    weight: 'Collector Box',
-    rating: 4.8,
-    reviews: 37,
-    badge: 'B2B Favorite',
-    image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=900&auto=format&fit=crop',
-    desc: 'Bespoke corporate gifting box with custom logo engraving, gold foil pen, Italian leather desk accessories, and branded silver medallion.',
-    giftReady: true,
-    customizable: true
-  },
-  {
-    id: 16,
-    name: 'Vintage Royal Wax Seal & Parchment Gift Set',
-    cat: 'gifting',
-    sub: 'Personalized Wax Seal Gifts',
-    price: 7500,
-    old: 9000,
-    metal: 'Solid Brass Stamp & Handle',
-    weight: 'Artisan Set',
-    rating: 4.9,
-    reviews: 114,
-    badge: 'Personal Touch',
-    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=900&auto=format&fit=crop',
-    desc: 'Custom engraved initial brass seal stamp, 4 jars of metallic sealing wax beads, brass melting spoon, and handmade deckle-edge cotton papers.',
-    giftReady: true,
-    customizable: true
-  },
+
 
   // --- SILVER ARTICLES (REFERENCE DESIGN) ---
   {

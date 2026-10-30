@@ -114,11 +114,11 @@ function Header() {
             Lightweight Diamond Studs
           </NavLink>
 
-          <NavLink to="/gifting-service" className="nav-tab">
+          <NavLink to="/category/designer-silver" className="nav-tab">
             Designer Silver Jewellery
           </NavLink>
 
-          <NavLink to="/about" className="nav-tab">
+          <NavLink to="/category/silver-article" className="nav-tab">
             Silver Articles
           </NavLink>
         </nav>
@@ -201,10 +201,11 @@ function Footer() {
           <h5>Collections</h5>
           <ul className="footer-links">
             <li><Link to="/category/jewellery"><i className="bi bi-arrow-right-short"></i> Fine Jewellery</Link></li>
+            <li><Link to="/category/designer-silver"><i className="bi bi-arrow-right-short"></i> Designer Silver Jewellery</Link></li>
+            <li><Link to="/category/silver-article"><i className="bi bi-arrow-right-short"></i> Silver Articles</Link></li>
             <li><Link to="/category/frames"><i className="bi bi-arrow-right-short"></i> Gold & Silver Frames</Link></li>
             <li><Link to="/category/gifting"><i className="bi bi-arrow-right-short"></i> Curated Gift Hampers</Link></li>
             <li><Link to="/gifting-service"><i className="bi bi-arrow-right-short"></i> Custom Gift Studio</Link></li>
-            <li><Link to="/shop"><i className="bi bi-arrow-right-short"></i> New Arrivals</Link></li>
           </ul>
         </div>
 
@@ -252,12 +253,13 @@ function Footer() {
 function ProductCard({ p }) {
   const { wish, toggleWish, addCart } = useShop()
   const isWished = wish.includes(p.id)
+  const isSilverJewellery = getProductCategory(p) === 'designer-silver'
 
   return (
     <div className="product-card">
       <div className="product-img-wrap">
-        <span className={`badge-tag ${p.cat === 'gifting' ? 'gifting' : p.cat === 'silver-articles' ? 'silver' : ''}`}>
-          <i className={p.cat === 'gifting' ? 'bi bi-gift-fill' : p.cat === 'frames' ? 'bi bi-card-image' : p.cat === 'silver-articles' ? 'bi bi-stars' : 'bi bi-gem'}></i> {p.badge || p.sub}
+        <span className={`badge-tag ${p.cat === 'gifting' ? 'gifting' : (p.cat === 'silver-articles' || isSilverJewellery) ? 'silver' : ''}`}>
+          <i className={p.cat === 'gifting' ? 'bi bi-gift-fill' : p.cat === 'frames' ? 'bi bi-card-image' : (p.cat === 'silver-articles' || isSilverJewellery) ? 'bi bi-stars' : 'bi bi-gem'}></i> {p.badge || p.sub}
         </span>
         <button
           className={`btn-wish ${isWished ? 'active' : ''}`}
@@ -273,13 +275,25 @@ function ProductCard({ p }) {
 
       <div className="product-info">
         <span className="product-cat">
-          {p.cat === 'jewellery' ? 'Fine Jewellery' : p.cat === 'frames' ? 'Heirloom Frame' : (p.cat === 'silver-articles' || p.cat === 'articles') ? 'Silver Articles' : 'Luxury Gifting'}
+          {isSilverJewellery ? 'Designer Silver Jewellery' : p.cat === 'jewellery' ? 'Fine Jewellery' : p.cat === 'frames' ? 'Heirloom Frame' : (p.cat === 'silver-articles' || p.cat === 'articles') ? 'Silver Articles' : 'Luxury Gifting'}
         </span>
         <Link to={`/product/${p.id}`}>
           <h4 className="product-title">{p.name}</h4>
         </Link>
         <div className="product-specs">
           <i className="bi bi-check2-circle text-gold"></i> {p.metal} · {p.weight}
+        </div>
+
+        <div className="product-rating" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', margin: '4px 0 6px' }}>
+          <span className="stars" style={{ display: 'inline-flex', gap: '2px', fontSize: '11px', color: '#f59e0b' }}>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star-fill"></i>
+            <i className="bi bi-star-fill"></i>
+          </span>
+          <span style={{ fontWeight: 600, color: 'var(--ranaya-dark)' }}>{p.rating ? p.rating.toFixed(1) : '5.0'}</span>
+          {p.reviews && <span className="muted" style={{ fontSize: '11.5px' }}>({p.reviews})</span>}
         </div>
         
         <div className="product-price-row">
@@ -496,7 +510,7 @@ function HomePage() {
         </div>
         <div className="center" style={{ marginTop: 36 }}>
           <Link to="/shop" className="btn btn-gold">
-            <i className="bi bi-grid-3x3-gap"></i> View All 16 Masterpieces
+            <i className="bi bi-grid-3x3-gap"></i> View All Masterpieces
           </Link>
         </div>
       </section>
@@ -694,14 +708,12 @@ const CATEGORY_OPTIONS = [
 ]
 
 function getProductCategory(p) {
-  if (p.cat === 'silver-articles' || p.cat === 'articles') return 'silver-article'
-  if (p.id === 8 || p.id === 9 || p.id === 10 || p.id === 11) return 'silver-frames'
-  if (p.id === 7 || p.id === 13) return 'prima-art'
-  if (p.id === 2 || p.id === 3 || p.id === 5 || p.id === 6) return 'lightweight-diamond'
-  if (p.id === 1 || p.id === 4) return 'designer-silver'
-  if (p.id === 12 || p.id === 14 || p.id === 15 || p.id === 16) return 'silver-article'
-  if (p.cat === 'frames') return 'silver-frames'
-  if (p.cat === 'gifting') return 'silver-article'
+  if (p.cat === 'silver-articles' || p.cat === 'articles' || (p.id >= 17 && p.id <= 24)) return 'silver-article'
+  if (p.id === 8 || p.id === 9 || p.id === 10 || p.id === 11 || p.cat === 'frames') return 'silver-frames'
+  if (p.id === 13) return 'prima-art'
+  if (p.id === 7 || (p.cat === 'jewellery' && p.metal && p.metal.toLowerCase().includes('silver'))) return 'designer-silver'
+  if (p.id === 1 || p.id === 2 || p.id === 3 || p.id === 4 || p.id === 5 || p.id === 6) return 'lightweight-diamond'
+  if (p.id === 12 || p.id === 14 || p.cat === 'gifting') return 'silver-article'
   return 'designer-silver'
 }
 
@@ -720,6 +732,8 @@ function ShopPage({ cat, sub }) {
     'prima-art': 'prima-art',
     'lightweight-diamond': 'lightweight-diamond',
     'designer-silver': 'designer-silver',
+    'designer-silver-jewellery': 'designer-silver',
+    'silver-jewellery': 'designer-silver',
     'silver-article': 'silver-article',
     'silver-articles': 'silver-article',
   }
@@ -751,21 +765,26 @@ function ShopPage({ cat, sub }) {
   let items = PRODUCTS.filter(p => {
     if (selectedCat !== 'all' && getProductCategory(p) !== selectedCat) return false
     if (p.price > maxPrice) return false
-    if (qParam && !p.name.toLowerCase().includes(qParam.toLowerCase()) && !p.desc.toLowerCase().includes(qParam.toLowerCase())) return false
+    if (qParam && !p.name.toLowerCase().includes(qParam.toLowerCase()) && !p.desc?.toLowerCase().includes(qParam.toLowerCase())) return false
     return true
   })
 
   if (sort === 'low') items = [...items].sort((a, b) => a.price - b.price)
   if (sort === 'high') items = [...items].sort((a, b) => b.price - a.price)
-  if (sort === 'rating') items = [...items].sort((a, b) => b.rating - a.rating)
+  if (sort === 'rating') items = [...items].sort((a, b) => (b.rating || 0) - (a.rating || 0))
 
   const activeCatObj = SHOP_CATEGORIES.find(c => c.id === selectedCat)
   const activeCatTitle = activeCatObj && activeCatObj.id !== 'all' ? activeCatObj.name : 'All Categories'
 
   const handleResetFilters = () => {
-    setSelectedCat('all')
     setMaxPrice(120000)
-    nav('/shop')
+    setSort('popular')
+    if (currentCatParam) {
+      setSelectedCat(urlCatMap[currentCatParam] || currentCatParam)
+    } else {
+      setSelectedCat('all')
+      nav('/shop')
+    }
   }
 
   const handleCategoryClick = (catId) => {
@@ -778,7 +797,7 @@ function ShopPage({ cat, sub }) {
     }
   }
 
-  const isFiltered = selectedCat !== 'all' || maxPrice < 120000
+  const isFiltered = (selectedCat !== 'all' && !currentCatParam) || maxPrice < 120000 || sort !== 'popular'
 
   return (
     <PageWrapper
@@ -850,15 +869,15 @@ function ShopPage({ cat, sub }) {
             <input
               type="range"
               className="sidebar-price-slider"
-              min="5000"
+              min="0"
               max="120000"
-              step="5000"
+              step="500"
               value={maxPrice}
               onChange={e => setMaxPrice(Number(e.target.value))}
               aria-label="Max Price filter"
             />
             <div className="sidebar-price-range">
-              <span>₹5,000</span>
+              <span>₹0</span>
               <span>₹1,20,000</span>
             </div>
           </div>
@@ -988,7 +1007,7 @@ function ProductDetailPage() {
                   {isLast ? (
                     <span>{crumb}</span>
                   ) : (
-                    <Link to="/shop">{crumb}</Link>
+                    <Link to={crumb.toLowerCase() === 'silver' ? '/category/designer-silver' : '/shop'}>{crumb}</Link>
                   )}
                 </React.Fragment>
               )
@@ -997,8 +1016,16 @@ function ProductDetailPage() {
         ) : (
           <>
             <i className="bi bi-chevron-right" style={{ fontSize: 10 }}></i>
-            <Link to={`/category/${p.cat}`}>
-              {p.cat === 'jewellery' ? 'Fine Jewellery' : p.cat === 'frames' ? 'Frames' : 'Luxury Gifting'}
+            <Link to={`/category/${getProductCategory(p)}`}>
+              {getProductCategory(p) === 'designer-silver'
+                ? 'Designer Silver Jewellery'
+                : p.cat === 'jewellery'
+                ? 'Fine Jewellery'
+                : p.cat === 'frames'
+                ? 'Frames'
+                : (p.cat === 'silver-articles' || p.cat === 'articles')
+                ? 'Silver Articles'
+                : 'Luxury Gifting'}
             </Link>
             <i className="bi bi-chevron-right" style={{ fontSize: 10 }}></i>
             <span>{p.name}</span>
@@ -2689,6 +2716,8 @@ export default function App() {
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/category/:cat" element={<CategoryPageWrapper />} />
         <Route path="/category/:cat/:sub" element={<CategoryPageWrapper />} />
+        <Route path="/designer-silver" element={<ShopPage cat="designer-silver" />} />
+        <Route path="/designer-silver-jewellery" element={<ShopPage cat="designer-silver" />} />
         <Route path="/product/:id" element={<ProductDetailPage />} />
         <Route path="/gifting-service" element={<GiftingStudioPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
